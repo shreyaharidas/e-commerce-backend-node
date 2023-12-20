@@ -1,16 +1,24 @@
 # e-commerce-backend-node
 
-sequelize and router setup
+implement typescript
 
-npm install sequelize mysql2 for sequelize
+npm install -g typescript
+npm install --save-dev typescript @types/node
 
-CREATE TABLE ec_suppliers (
-    id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    full_name VARCHAR(255) NOT NULL,
-    e_mail VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    profile_pic BLOB, -- or use TEXT if you prefer
-    registration_id VARCHAR(255) NOT NULL,
-    registration_time_stamp TIMESTAMP NOT NULL
-);
+Create a tsconfig.json file in your project root to configure TypeScript. You can create it manually or use the following command to generate it interactively:
+npx tsc --init
+
+npx tsc
+
+change tsconfig file
+
+npm i --save-dev @types/express
+
+npm install -g ts-node
+npm install --save-dev ts-node
+
+
+
+<!-- if you're using TypeScript for type-checking only), setting noEmit to true is a common practice. If you do want to generate JavaScript files, emitDeclarationOnly is an alternative option -->
+
 

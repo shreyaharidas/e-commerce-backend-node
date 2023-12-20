@@ -1,31 +1,32 @@
-require('dotenv').config(); // Load environment variables from .env
-const express = require('express');
-const app = express();
-const sequelize = require('./src/config/sequelize-config');
+import * as dotenv from 'dotenv';
+dotenv.config(); // Load environment variables from .env
 
+import express from 'express';
+import sequelize from './config/sequelize-config.ts';
+
+const app = express();
 const port = process.env.PORT || 3000; // Use the PORT variable from .env or default to 3000
 
-const indexRoutes = require('./src/routes/index');
-const supplierRoutes = require('./src/routes/supplierRoutes');
-
+import indexRoutes from './routes/index.ts';
+import supplierRoutes from './routes/supplierRoutes.ts';
 
 // Sync the database
 sequelize.sync({ force: false }) // Set force to true to drop and recreate tables on every application start
   .then(() => {
     console.log('Database synced');
   })
-  .catch((error) => {
+  .catch((error: Error) => {
     console.error('Error syncing database:', error);
   });
 
-// Define a simple route
-// app.use('/', indexRoutes);
+// Define routes
 app.use('/api/v1', supplierRoutes);
 
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
 
 // app.js
 
