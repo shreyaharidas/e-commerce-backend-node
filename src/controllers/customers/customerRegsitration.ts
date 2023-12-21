@@ -1,12 +1,12 @@
 import { Request, Response, Router } from 'express';
-import EcSuppliers from "../../models/ec_suppliers";
+import EcCustomers from "../../models/ec_customers";
 
-const supplierRegistration = async(req: Request, res: Response) :Promise<void> => {
+const customerRegistration = async(req: Request, res: Response) :Promise<void> => {
  
     try {
       const { full_name, e_mail, password, profile_pic } = req.body;
   
-      const newSupplier = await EcSuppliers.create({
+      const newCustomer = await EcCustomers.create({
         full_name,
         e_mail,
         password,
@@ -14,9 +14,10 @@ const supplierRegistration = async(req: Request, res: Response) :Promise<void> =
       },{raw:true});
 
 
+    // newCustomer.set(password);
     
       // Return the newly created user
-      res.status(201).json({registration_id:newSupplier.registration_id});
+      res.status(201).json({registration_id:newCustomer .registration_id});
     } catch (error:any) {
       console.error(error);
       res.status(500).json({ error: error.toString() });
@@ -25,5 +26,5 @@ const supplierRegistration = async(req: Request, res: Response) :Promise<void> =
   
   };
   
-  export { supplierRegistration };
+  export { customerRegistration };
   

@@ -10,6 +10,7 @@ const router: Router = express.Router();
 // });
 
 router.post('/supplierRegistration', (req: Request, res: Response) => {
+  console.log(req);
   supplierRegistration(req, res); 
 });
 

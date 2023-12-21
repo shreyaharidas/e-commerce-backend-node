@@ -3,7 +3,6 @@
     "target": "es2016",
     "module": "commonjs",  // Change to "commonjs" instead of "NodeNext"
     "outDir": "./dist",
-    "rootDir": "./src",   // Set your source code directory
     "strict": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
