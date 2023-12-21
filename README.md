@@ -1,3 +1,5 @@
-registration api
+middleware
 
-login api returning jwt
+profile api
+
+password reset api
