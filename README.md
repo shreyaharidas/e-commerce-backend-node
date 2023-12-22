@@ -1,5 +1,5 @@
-middleware
+mongoDB Atlas setup
 
-profile api
-
-password reset api
+getproductsSupplier API
+add products API
+getProducts API w/ aggregation pipeline

@@ -4,6 +4,7 @@ import sequelize from './config/sequelize-config.ts';
 import indexRoutes from './routes/index.ts';
 import supplierRoutes from './routes/supplierRoutes.ts';
 import customerRoutes from './routes/customerRoutes.ts'
+import { connectToMongoDb, stopMongoDb } from './services/mongodb.ts';
 
 dotenv.config(); // Load environment variables from .env
 const app = express();
@@ -14,6 +15,16 @@ const port = process.env.PORT || 3000; // Use the PORT variable from .env or def
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((err: Error) => {
+    console.error('Unable to connect to the database:', err);
+  });
+
 // Sync the database
 sequelize.sync({ force: false }) // Set force to true to drop and recreate tables on every application start
   .then(() => {
@@ -22,6 +33,8 @@ sequelize.sync({ force: false }) // Set force to true to drop and recreate table
   .catch((error: Error) => {
     console.error('Error syncing database:', error);
   });
+
+  connectToMongoDb();
 
 
 // Define routes
@@ -34,33 +47,10 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
+process.on("SIGINT",()=>{
+  sequelize.close(); stopMongoDb();
+})
 
-// app.js
-
-
-
-
-
-// Example usage in app.js
-
-// const User = require('./models/User');
-
-// // Create a new user
-// User.create({
-//   name: 'John Doe',
-// })
-//   .then((user) => {
-//     console.log('User created:', user.toJSON());
-//   })
-//   .catch((error) => {
-//     console.error('Error creating user:', error);
-//   });
-
-// // Fetch all users
-// User.findAll()
-//   .then((users) => {
-//     console.log('All users:', users.map((user) => user.toJSON()));
-//   })
-//   .catch((error) => {
-//     console.error('Error fetching users:', error);
-//   });
+process.on("exit",()=>{
+  sequelize.close(); stopMongoDb();
+})

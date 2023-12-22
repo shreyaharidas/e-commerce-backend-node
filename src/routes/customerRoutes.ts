@@ -3,6 +3,7 @@ import { customerRegistration } from '../controllers/customers/customerRegsitrat
 import verifyToken from '../middleware/verifyjwt';
 import { customerProfile } from '../controllers/customers/customerProfile';
 import resetPassword from '../controllers/commonFunctionalities/resetPassword';
+import { getProducts } from '../controllers/products/getProducts';
 
 // Create a router instance
 const router: Router = express.Router();
@@ -18,6 +19,10 @@ router.get('/customerProfile',verifyToken,(req:Request, res:Response)=>{
 
 router.patch('/resetPassword',verifyToken,(req:Request, res:Response)=>{
   resetPassword(req,res);
+})
+
+router.get('/getProducts',verifyToken,(req:Request, res:Response)=>{
+  getProducts(req,res);
 })
 
 // Export the router

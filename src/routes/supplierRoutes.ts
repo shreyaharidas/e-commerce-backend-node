@@ -3,6 +3,8 @@ import { supplierRegistration } from '../controllers/supplierControllers/supplie
 import verifyToken from '../middleware/verifyjwt.ts';
 import resetPassword from '../controllers/commonFunctionalities/resetPassword.ts';
 import { supplierProfile } from '../controllers/supplierControllers/supplierProfile.ts';
+import { getProductsSupplier } from '../controllers/products/getProductsSupplier.ts';
+import { addProducts } from '../controllers/products/addProducts.ts';
 
 // Create a router instance
 const router: Router = express.Router();
@@ -25,9 +27,12 @@ router.patch('/resetPassword',verifyToken,(req:Request, res:Response)=>{
   resetPassword(req,res);
 })
 
-router.get('/suppliers/:id', (req: Request, res: Response) => {
-  res.send(`Supplier profile for ID ${req.params.id}`);
+router.get('/getProductsSupplier', verifyToken, (req: Request, res: Response) => {
+  getProductsSupplier(req,res);
 });
 
+router.post('/addProducts', verifyToken,(req: Request, res: Response) => {
+  addProducts(req,res);
+});
 // Export the router
 export default router;
