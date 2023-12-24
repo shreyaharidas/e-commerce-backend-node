@@ -1,5 +1,5 @@
-mongoDB Atlas setup
+getproductsSupplier API -filter and sort
+getProducts API w/ aggregation pipeline -filter and sort
 
-getproductsSupplier API
-add products API
-getProducts API w/ aggregation pipeline
+
+searching
