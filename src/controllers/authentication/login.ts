@@ -31,7 +31,7 @@ let user;
             { expiresIn: '24h' } // Token expiration time
           );
     
-          res.json({ token });
+          res.json({ token, registration_id:user.registration_id });
         } else {
           res.status(401).json({ message: 'Invalid credentials' });
         }
