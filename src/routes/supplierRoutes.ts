@@ -5,6 +5,7 @@ import resetPassword from '../controllers/commonFunctionalities/resetPassword.ts
 import { supplierProfile } from '../controllers/supplierControllers/supplierProfile.ts';
 import { getProductsSupplier } from '../controllers/products/getProductsSupplier.ts';
 import { addProducts } from '../controllers/products/addProducts.ts';
+import { editProducts } from '../controllers/products/editProducts.ts';
 
 // Create a router instance
 const router: Router = express.Router();
@@ -32,6 +33,10 @@ router.get('/getProductsSupplier', verifyToken, (req: Request, res: Response) =>
 
 router.post('/addProducts', verifyToken,(req: Request, res: Response) => {
   addProducts(req,res);
+});
+
+router.patch('/editProducts', verifyToken,(req: Request, res: Response) => {
+  editProducts(req,res);
 });
 // Export the router
 export default router;
