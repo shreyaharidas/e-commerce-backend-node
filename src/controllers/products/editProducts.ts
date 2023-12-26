@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import { Db, ObjectId } from 'mongodb';
 import { client } from "../../services/mongodb.ts";
+import { Server } from 'socket.io';
 
 const db: Db = client.db("e-commerce");
 
 // Define the route to edit product stock
-const editProducts = async (req: Request, res: Response) => {
+const editProducts = async (req: Request, res: Response, io:Server) => {
   try {
     const { _id, updatedStock }: { _id: string, updatedStock: number } = req.body;
 
@@ -24,6 +25,10 @@ const editProducts = async (req: Request, res: Response) => {
     );
 
     if (result.modifiedCount >= 0) {
+      if (result.modifiedCount === 0) {
+        // Emit socket event to notify customers that the product is out of stock
+        io.emit('productOutOfStock', { productId: _id });
+      }
       res.status(200).json({ success: 'Product stock updated successfully' });
     } else {
       res.status(404).json({ error: 'Product not found' });

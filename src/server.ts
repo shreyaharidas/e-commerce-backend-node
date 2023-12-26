@@ -3,19 +3,22 @@ import express from 'express';
 import sequelize from './config/sequelize-config.ts';
 import indexRoutes from './routes/index.ts';
 import supplierRoutes from './routes/supplierRoutes.ts';
-import customerRoutes from './routes/customerRoutes.ts'
+import customerRoutes from './routes/customerRoutes.ts';
 import { connectToMongoDb, stopMongoDb } from './services/mongodb.ts';
 import cors from 'cors';
+import { initializeSocket } from './services/socket.ts';
+import { initializeIO } from './services/io.ts';
+import http from 'http';
 
-dotenv.config(); // Load environment variables from .env
+dotenv.config();
+
 const app = express();
-const port = process.env.PORT || 3000; // Use the PORT variable from .env or default to 3000
+const port = process.env.PORT || 3000;
+const server = http.createServer(app);
 
 app.use(cors());
-// Add this line before app.use(express.json());
-app.use(express.urlencoded({limit:"500kb", extended: true }));
-
-app.use(express.json({limit:"500kb"}));
+app.use(express.urlencoded({ limit: '500kb', extended: true }));
+app.use(express.json({ limit: '500kb' }));
 
 sequelize
   .authenticate()
@@ -26,8 +29,8 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-// Sync the database
-sequelize.sync({ force: false }) // Set force to true to drop and recreate tables on every application start
+sequelize
+  .sync({ force: false })
   .then(() => {
     console.log('Database synced');
   })
@@ -35,24 +38,28 @@ sequelize.sync({ force: false }) // Set force to true to drop and recreate table
     console.error('Error syncing database:', error);
   });
 
-  connectToMongoDb();
+connectToMongoDb();
 
+// Initialize Socket.IO
+const io = initializeSocket(server);
 
-  
-// Define routes
+// Initialize the io instance
+initializeIO(io);
+
 app.use(indexRoutes);
 app.use('/api/v1', supplierRoutes);
-app.use('/api/v2',customerRoutes);
+app.use('/api/v2', customerRoutes);
 
-// Start the server
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-process.on("SIGINT",()=>{
-  sequelize.close(); stopMongoDb();
-})
+process.on('SIGINT', () => {
+  sequelize.close();
+  stopMongoDb();
+});
 
-process.on("exit",()=>{
-  sequelize.close(); stopMongoDb();
-})
+process.on('exit', () => {
+  sequelize.close();
+  stopMongoDb();
+});

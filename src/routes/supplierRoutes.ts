@@ -6,14 +6,15 @@ import { supplierProfile } from '../controllers/supplierControllers/supplierProf
 import { getProductsSupplier } from '../controllers/products/getProductsSupplier.ts';
 import { addProducts } from '../controllers/products/addProducts.ts';
 import { editProducts } from '../controllers/products/editProducts.ts';
+import { Server } from 'socket.io';
+import { initializeIO } from '../services/io.ts';
+import { getIO } from '../services/io.ts';
 
 // Create a router instance
 const router: Router = express.Router();
 
-// Define your supplier-related routes
-// router.get('/suppliers', (req, res) => {
-//   res.send('List of suppliers');
-// });
+// Initialize the io instance using the getIO function
+const io = getIO();
 
 router.post('/supplierRegistration', (req: Request, res: Response) => {
   supplierRegistration(req, res); 
@@ -35,8 +36,14 @@ router.post('/addProducts', verifyToken,(req: Request, res: Response) => {
   addProducts(req,res);
 });
 
-router.patch('/editProducts', verifyToken,(req: Request, res: Response) => {
-  editProducts(req,res);
+router.patch('/editProducts', verifyToken, (req: Request, res: Response) => {
+  if (io) {
+    editProducts(req, res, io);
+  } else {
+    res.status(500).json({ error: 'Socket.IO not initialized' });
+  }
 });
 // Export the router
+
 export default router;
+

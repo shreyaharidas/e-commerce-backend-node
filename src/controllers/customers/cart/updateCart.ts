@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import EcCart from '../../../models/ec_cart';
 
+
 //ADD ERROR HANDLING TO CHECK FOR STOCK BEFORE UPDATING!!!
 
 const updateCart = async (req: Request, res: Response) => {
@@ -39,6 +40,7 @@ const updateCart = async (req: Request, res: Response) => {
             // Save the updated cart entry
             await cartEntry.save();
             updatedCartEntries.push(cartEntry);
+
           }
       }
       if (!cartEntry) {
@@ -51,10 +53,10 @@ const updateCart = async (req: Request, res: Response) => {
       }
     }
 
-    res.status(200).json({ success: 'Cart updated successfully', updatedCartEntries });
+    return res.status(200).json({ success: 'Cart updated successfully', updatedCartEntries });
   } catch (error) {
     console.error('Error updating cart:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
