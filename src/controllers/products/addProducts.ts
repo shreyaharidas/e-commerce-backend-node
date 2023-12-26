@@ -8,10 +8,10 @@ let db: Db = client.db("e-commerce");
 
 const addProducts = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
     try {
-        const { product_name, product_category, product_stock, product_photo, ...otherData } = req.body;
+        const { product_name, product_category, product_price,product_stock, product_photo, ...otherData } = req.body;
 
         // Validate required fields
-        if (!product_name || !product_category || !product_stock || !product_photo) {
+        if (!product_name || !product_category ||!product_price|| !product_stock || !product_photo) {
             return res.status(422).json({ error: 'Required fields are missing' });
         }
 
@@ -29,6 +29,7 @@ const addProducts = async (req: Request, res: Response): Promise<Response<any, R
             supplier_reg_id:supplier_reg_details?.registration_id,
             product_name,
             product_category,
+            product_price,
             product_stock,
             product_photo: Buffer.from(product_photo, 'base64'), // Assuming product_photo is a base64-encoded string
             ...otherData,

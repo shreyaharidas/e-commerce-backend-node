@@ -1,8 +1,12 @@
-getproductsSupplier API -filter and sort
-getProducts API w/ aggregation pipeline -filter and sort
+TESTING REMAINING!!!
+
+checkout api w/ 3rd party stripe API and invoice .csv generation
 
 
-searching
+setup cors
 
+setting api payload limit- 500kb
+letting database accept longblob- 
+ALTER TABLE your_table MODIFY profile_pic LONGBLOB;
 
-edit products API- editing only stock for now
+converting to blob in registration APIs
