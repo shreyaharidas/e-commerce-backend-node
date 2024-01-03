@@ -9,14 +9,14 @@ let db: Db = client.db("e-commerce");
 // Define the route to get products
 const getProductsSupplier = async (req: Request, res: Response) => {
     try {
-        const supplierRegId = req.body.supplier_reg_id;
+        const supplierRegId = req.query.supplier_reg_id as string;
 
         const { offset, sortBy, sortOrder, search }: ParsedQs = req.query
 
 
         if (!supplierRegId) {
             // If supplier_name is not provided in the request body, return an error
-            return res.status(422).json({ error: 'Supplier Registration ID required in the request body' });
+            return res.status(422).json({ error: 'Supplier Registration ID required in the request' });
         }
 
        
