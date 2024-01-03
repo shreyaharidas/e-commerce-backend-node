@@ -15,6 +15,8 @@ pool.query(`DROP TABLE your_table`, (error, results) => {
 
 // Close the pool when the application is about to exit
 // The code you provided is using the process.on('SIGINT', ...) event listener to handle the SIGINT signal. This signal is sent to a process when the user presses Ctrl+C in the terminal, indicating an intention to interrupt and terminate the process.
+
+//process refers to the instance of the Node.js runtime that is currently running your application
 process.on('SIGINT', () => {
   pool.end((err) => {
     if (err) throw err;
