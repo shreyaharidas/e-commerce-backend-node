@@ -40,7 +40,7 @@ const addProducts = async (req: Request, res: Response): Promise<Response<any, R
         await productsCollection.insertOne(productDocument);
 
         // Respond with success message
-        return res.status(201).json({ success: 'Product added successfully' });
+        return res.status(201).json({ message: 'Product added successfully' });
     } catch (error) {
         console.error('Error inserting product:', error);
         return res.status(500).json({ error: 'Internal Server Error' });
