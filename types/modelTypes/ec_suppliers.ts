@@ -1,18 +1,18 @@
 import { Model } from 'sequelize';
 
-interface EcSuppliersAttributes {
-    id?: number;
-    full_name: string;
-    e_mail: string;
-    password: string;
-    profile_pic: Buffer | null;
-    registration_id?: string;
-    registration_time_stamp?: Date;
-    createdAt?:Date,
-    updatedAt?:Date,
-  }
+// interface EcSuppliersAttributes {
+//     id?: number;
+//     full_name: string;
+//     e_mail: string;
+//     password: string;
+//     profile_pic: Buffer | null;
+//     registration_id?: string;
+//     registration_time_stamp?: Date;
+//     createdAt?:Date,
+//     updatedAt?:Date,
+//   }
   
-  class EcSuppliers extends Model<EcSuppliersAttributes> {
+  class EcSuppliers extends Model {
     public id?: number;
     public full_name!: string;
     public e_mail!: string;
