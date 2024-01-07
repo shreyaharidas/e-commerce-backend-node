@@ -13,7 +13,20 @@ const getProductsSupplier=async (req: Request, res: Response) => {
       // If supplier_name is not provided in the request body, return an error
       return res.status(422).json({ error: 'Supplier Registration Id required in the request body' });
     }
-    const products = await db.collection('products').find({ supplier_reg_id: supplierRegId }).toArray();
+    const products = await db.collection('products').find(
+      { supplier_reg_id: supplierRegId },
+      {
+        projection: {
+          product_name: 1,
+          product_category: 1,
+          product_price: 1,
+          product_stock: 1,
+          product_photo: 1,
+          _id: 1
+        }
+      }
+    ).toArray();
+    
 
     // if ( products.length===0){
 
