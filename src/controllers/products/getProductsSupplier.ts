@@ -42,7 +42,16 @@ if(offset){
 if(sortBy &&sortOrder){
     sorting={[sortBy as string]:parseInt(sortOrder as string)}
     }
-        let products = await db.collection('products').find(searchQuery).skip(skip).limit(10).sort(sorting).toArray();
+        let products = await db.collection('products').find(searchQuery,{
+          projection: {
+            product_name: 1,
+            product_category: 1,
+            product_price: 1,
+            product_stock: 1,
+            product_photo: 1,
+            _id: 1
+          }
+        }).skip(skip).limit(10).sort(sorting).toArray();
 
 
 
