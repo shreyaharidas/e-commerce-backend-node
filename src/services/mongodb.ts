@@ -18,7 +18,7 @@ const connectToMongoDb=async(): Promise<void>=> {
     // Connect the client to the server (optional starting in v4.7)
     await client.connect();
 
-    // Access a database, assuming you have one, but replace 'admin' with your actual database name
+    // Access a database, assuming you have one
     const db: Db = client.db("e-commerce");
 
     // Send a ping to confirm a successful connection
