@@ -5,6 +5,7 @@ import indexRoutes from './routes/index.ts';
 import supplierRoutes from './routes/supplierRoutes.ts';
 import customerRoutes from './routes/customerRoutes.ts'
 import { connectToMongoDb, stopMongoDb } from './services/mongodb.ts';
+import { sequelizeSync } from './services/sequelize.ts';
 
 dotenv.config(); // Load environment variables from .env
 const app = express();
@@ -16,23 +17,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err: Error) => {
-    console.error('Unable to connect to the database:', err);
-  });
+sequelizeSync();
 
 // Sync the database
-sequelize.sync({ force: false }) // Set force to true to drop and recreate tables on every application start
-  .then(() => {
-    console.log('Database synced');
-  })
-  .catch((error: Error) => {
-    console.error('Error syncing database:', error);
-  });
 
   connectToMongoDb();
 
