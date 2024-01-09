@@ -16,7 +16,7 @@ import { firstExampleMW, secondExampleMW } from './middleware/middlewareExample.
 dotenv.config(); // Load environment variables from .env
 const app:Express = express();
 const port = process.env.PORT || 3000; // Use the PORT variable from .env or default to 3000
-
+const server = http.createServer(app);
 app.use(cors());
 app.use(express.urlencoded({ limit: '500kb', extended: true }));
 app.use(express.json({ limit: '500kb' }));
