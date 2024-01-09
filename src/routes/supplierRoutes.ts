@@ -9,6 +9,7 @@ import { editProducts } from '../controllers/products/editProducts.ts';
 import { Server } from 'socket.io';
 import { initializeIO } from '../services/io.ts';
 import { getIO } from '../services/io.ts';
+import { getUniqueProduct } from '../controllers/products/getUniqueProduct.ts';
 
 // Create a router instance
 const router: Router = express.Router();
@@ -30,6 +31,10 @@ router.patch('/resetPassword',verifyToken,(req:Request, res:Response)=>{
 
 router.get('/getProductsSupplier', verifyToken, (req: Request, res: Response) => {
   getProductsSupplier(req,res);
+});
+
+router.get('/getUniqueProduct/:_id', verifyToken, (req: Request, res: Response) => {
+  getUniqueProduct(req,res);
 });
 
 router.post('/addProducts', verifyToken,(req: Request, res: Response) => {
