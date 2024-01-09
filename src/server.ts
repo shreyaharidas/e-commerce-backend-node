@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import express from 'express';
+import express, {Express, Request, Response, NextFunction} from 'express';
 import sequelize from './config/sequelize-config.ts';
 import indexRoutes from './routes/index.ts';
 import supplierRoutes from './routes/supplierRoutes.ts';
@@ -10,33 +10,19 @@ import { initializeSocket } from './services/socket.ts';
 import { initializeIO } from './services/io.ts';
 import http from 'http';
 
-dotenv.config();
+import { sequelizeSync } from './services/sequelize.ts';
+import { firstExampleMW, secondExampleMW } from './middleware/middlewareExample.ts';
 
-const app = express();
-const port = process.env.PORT || 3000;
-const server = http.createServer(app);
+dotenv.config(); // Load environment variables from .env
+const app:Express = express();
+const port = process.env.PORT || 3000; // Use the PORT variable from .env or default to 3000
 
 app.use(cors());
 app.use(express.urlencoded({ limit: '500kb', extended: true }));
 app.use(express.json({ limit: '500kb' }));
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch((err: Error) => {
-    console.error('Unable to connect to the database:', err);
-  });
+sequelizeSync();
 
-sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log('Database synced');
-  })
-  .catch((error: Error) => {
-    console.error('Error syncing database:', error);
-  });
 
 connectToMongoDb();
 
