@@ -9,4 +9,8 @@ setting api payload limit- 500kb
 letting database accept longblob- 
 ALTER TABLE your_table MODIFY profile_pic LONGBLOB;
 
+<<<<<<< HEAD
 converting to blob in registration APIs
+=======
+edit products API- editing only stock for now
+>>>>>>> eb5d511ca5a5865d834f25f67cc146865d3e2b21
