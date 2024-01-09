@@ -1,8 +1,3 @@
-getproductsSupplier API -filter and sort
-getProducts API w/ aggregation pipeline -filter and sort
+Cart APIs
 
-
-searching
-
-
-edit products API- editing only stock for now
+To be tested
