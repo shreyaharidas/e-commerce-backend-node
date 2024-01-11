@@ -4,7 +4,7 @@ import EcCart from '../../../models/ec_cart';
 const addToCart= async (req: Request, res: Response) => {
 
     try {
-        const products = req.body as { _id: string; registration_id: string; quantity: number }[];
+        const products:{ _id: string; registration_id: string; quantity: number }[] = req.body;
     
         // Validate required fields
         if (!products || !Array.isArray(products) || products.length === 0) {
@@ -22,7 +22,7 @@ const addToCart= async (req: Request, res: Response) => {
           if (!_id || !registration_id || !quantity) {
             return res.status(422).json({ error: 'Required fields are missing for a product' });
           }
-    
+        
           // Create a new cart entry
           const cartEntry = await EcCart.create({
             product_id: _id,

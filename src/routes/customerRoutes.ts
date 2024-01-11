@@ -7,6 +7,7 @@ import { getProducts } from '../controllers/products/getProducts';
 import addToCart from '../controllers/customers/cart/addToCart';
 import updateCart from '../controllers/customers/cart/updateCart';
 import getCart from '../controllers/customers/cart/getCart';
+import { getUniqueProduct } from '../controllers/products/getUniqueProduct';
 
 // Create a router instance
 const router: Router = express.Router();
@@ -39,6 +40,10 @@ router.patch('/updateCart',verifyToken,(req:Request, res:Response)=>{
 router.get('/getCart',verifyToken,(req:Request, res:Response)=>{
   getCart(req,res);
 })
+
+router.get('/getUniqueProduct/:_id', verifyToken, (req: Request, res: Response) => {
+  getUniqueProduct(req,res);
+});
 
 
 // Export the router

@@ -17,7 +17,14 @@ dotenv.config(); // Load environment variables from .env
 const app:Express = express();
 const port = process.env.PORT || 3000; // Use the PORT variable from .env or default to 3000
 const server = http.createServer(app);
-app.use(cors());
+
+const corsOptions = {
+  Accept: 'application/json, text/plain',
+  origin: 'http://localhost:8080',
+
+};
+
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ limit: '500kb', extended: true }));
 app.use(express.json({ limit: '500kb' }));
 
@@ -43,6 +50,7 @@ server.listen(port, () => {
 process.on('SIGINT', () => {
   sequelize.close();
   stopMongoDb();
+  process.exit();
 });
 
 process.on('exit', () => {
