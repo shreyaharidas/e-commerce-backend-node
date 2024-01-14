@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from 'express';
+import multer from 'multer';
 import { customerRegistration } from '../controllers/customers/customerRegsitration';
 import verifyToken from '../middleware/verifyjwt';
 import { customerProfile } from '../controllers/customers/customerProfile';
@@ -11,9 +12,11 @@ import { getUniqueProduct } from '../controllers/products/getUniqueProduct';
 
 // Create a router instance
 const router: Router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 
-router.post('/customerRegistration', (req: Request, res: Response) => {
+router.post('/customerRegistration', upload.single("profile_pic"),(req: Request, res: Response) => {
   customerRegistration(req, res); 
 });
 

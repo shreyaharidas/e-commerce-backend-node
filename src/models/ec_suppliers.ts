@@ -27,7 +27,7 @@ EcSuppliers.init(
       allowNull: false,
     },
     profile_pic: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     registration_id: {
@@ -38,17 +38,17 @@ EcSuppliers.init(
       },
     },
     registration_time_stamp: {
-      type: DataTypes.TIME,
+      type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
     createdAt: {
-      type: DataTypes.TIME,
+      type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },
     updatedAt: {
-      type: DataTypes.TIME,
+      type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     },

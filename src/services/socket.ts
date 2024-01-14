@@ -1,33 +1,22 @@
-import { Server,Socket } from 'socket.io';
+// services/socket.ts
+
+import { Server, Socket } from 'socket.io';
 import http from 'http';
 import socketioJwt from 'socketio-jwt';
 
-
-const initializeSocket = (server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>) => {
-  const io = new Server(server, {
+const initializeSocket = (httpServer: http.Server) => {
+  const io = new Server(httpServer, {
     cors: {
-      origin: 'http://localhost:3000', // Replace with your frontend URL
-      methods: ['GET', 'POST'],
+      origin: 'http://localhost:8080', // frontend URL
     },
   });
-
-  io.use((socket, next) => {
-    socketioJwt.authorize({
-      secret: 'your-secret-key', // replace with your actual secret key
-    })(socket, next);
-  });
-  
-  io.on('connection', (socket: Socket) => {
-    console.log('A user connected');
-
-    // Handle your socket events here
-
-    socket.on('disconnect', () => {
-      console.log('User disconnected');
-    });
-  });
-
+  // io.use((socket, next) => {
+  //   socketioJwt.authorize({
+  //     secret: 'your-secret-key',
+  //     // handshake: true,
+  //   })(socket, next as any);
+  // });
   return io;
 };
 
-export {initializeSocket};
+export { initializeSocket };

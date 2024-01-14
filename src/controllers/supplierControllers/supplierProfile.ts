@@ -8,7 +8,7 @@ const supplierProfile = async (req: Request, res: Response): Promise<void | Resp
 
     // Fetch supplier profile details from the database
     const supplier = await EcSuppliers.findByPk(userId, {
-      attributes: ['full_name', 'e_mail', 'registration_id', 'registration_time_stamp'],
+      attributes: ['full_name', 'e_mail', 'registration_id', 'registration_time_stamp', 'profile_pic'],
     });
 
     if (!supplier) {
@@ -18,10 +18,7 @@ const supplierProfile = async (req: Request, res: Response): Promise<void | Resp
 
     // Return supplier profile details
     res.status(200).json({
-      full_name: supplier.full_name,
-      e_mail: supplier.e_mail,
-      registration_id: supplier.registration_id,
-      registration_time_stamp: supplier.registration_time_stamp,
+...supplier["dataValues"]
     });
   } catch (error) {
     console.error(error);

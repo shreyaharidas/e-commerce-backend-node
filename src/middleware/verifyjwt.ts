@@ -18,7 +18,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): void|Resp
     }
 
     // Attach the decoded payload to the request object for further use
-    req.body.jwt_decoded = decoded;
+    else req.body["jwt_decoded"] = decoded;
     next();
   });
 };

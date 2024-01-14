@@ -1,51 +1,59 @@
+// server.ts
+
 import * as dotenv from 'dotenv';
-import express, {Express, Request, Response, NextFunction} from 'express';
-import sequelize from './config/sequelize-config.ts';
-import indexRoutes from './routes/index.ts';
-import supplierRoutes from './routes/supplierRoutes.ts';
-import customerRoutes from './routes/customerRoutes.ts';
+import express, { Express } from 'express';
+import http from 'http';
+import { sequelizeSync } from './services/sequelize.ts';
 import { connectToMongoDb, stopMongoDb } from './services/mongodb.ts';
 import cors from 'cors';
 import { initializeSocket } from './services/socket.ts';
-import { initializeIO } from './services/io.ts';
-import http from 'http';
+import socketioJwt from 'socketio-jwt';
+import sequelize from './config/sequelize-config.ts';
 
-import { sequelizeSync } from './services/sequelize.ts';
-import { firstExampleMW, secondExampleMW } from './middleware/middlewareExample.ts';
+import { Server, Socket } from 'socket.io';
+import supplierRoutes from './routes/supplierRoutes.ts';
+import customerRoutes from './routes/customerRoutes.ts';
+import indexRoutes from './routes/index.ts';
 
-dotenv.config(); // Load environment variables from .env
-const app:Express = express();
-const port = process.env.PORT || 3000; // Use the PORT variable from .env or default to 3000
-const server = http.createServer(app);
+dotenv.config();
+
+export const app: Express = express();
+const port = process.env.PORT || 3000;
+export const server = http.createServer(app);
+export const io = initializeSocket(server);
+
+
+io.on('connection', (socket: Socket) => {
+  console.log('A user connected');
+  socket.on('out of stock emit received', () => {
+    console.log('Received from frontend also');
+  });
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
 
 const corsOptions = {
-  Accept: 'application/json, text/plain',
   origin: 'http://localhost:8080',
-
 };
+
+sequelizeSync();
+connectToMongoDb();
 
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ limit: '500kb', extended: true }));
 app.use(express.json({ limit: '500kb' }));
-
-sequelizeSync();
-
-
-connectToMongoDb();
-
-// Initialize Socket.IO
-const io = initializeSocket(server);
-
-// Initialize the io instance
-initializeIO(io);
-
+// Add other middleware and routes...
 app.use(indexRoutes);
 app.use('/api/v1', supplierRoutes);
 app.use('/api/v2', customerRoutes);
-
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+server.listen("3001", ()=>{
+  console.log("socket in 3001")
+})
 
 process.on('SIGINT', () => {
   sequelize.close();

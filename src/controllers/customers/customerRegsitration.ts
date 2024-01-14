@@ -1,37 +1,42 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response, Router, Express } from 'express';
 import EcCustomers from "../../models/ec_customers";
 import { base64ToBlob } from '../../utils/base64ToBlob';
+import AWS from 'aws-sdk';
+import { Readable } from 'stream';
+import { s3UploadAsync } from '../../utils/s3uploadAsync';
+
+
+// Configure multer to handle file uploads
 
 const customerRegistration = async(req: Request, res: Response) :Promise<void> => {
  
     try {
-      const { full_name, e_mail, password, profile_pic } = req.body;
+      const { full_name, e_mail, password } = req.body;
+      const file =req?.file as Express.Multer.File;
   
-      let profilePicBuffer;
-      if (profile_pic) {
-        try {
-          profilePicBuffer= base64ToBlob(profile_pic);
-        } catch (error) {
-          console.error('Error converting profile_pic to Buffer:', error);
-        }
+      const params: AWS.S3.PutObjectRequest = {
+        Bucket: 'ecommerce123',
+        Key: file?.originalname,
+        Body: Readable.from(file?.buffer),
+        ContentType: file?.mimetype,
+      };
+
+      try {
+        const profile_pic_url = await s3UploadAsync(params);
+        
+        const newCustomer = await EcCustomers.create({
+          full_name,
+          e_mail,
+          password,
+          profile_pic: profile_pic_url,
+        }, { raw: true });
+        res.status(201).json({registration_id:newCustomer.registration_id});
+      } catch (error) { 
+        throw error;
       }
-
-      const newCustomer = await EcCustomers.create({
-        full_name,
-        e_mail,
-        password,
-        profile_pic:profilePicBuffer,
-      },{raw:true});
-
-    
-      // Return the newly created user
-      res.status(201).json({registration_id:newCustomer .registration_id});
     } catch (error:any) {
-      console.error(error);
       res.status(500).json({ error: error.toString() });
     }
-
-  
   };
   
   export { customerRegistration };

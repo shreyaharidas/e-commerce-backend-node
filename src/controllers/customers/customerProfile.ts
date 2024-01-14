@@ -8,7 +8,7 @@ const customerProfile = async (req: Request, res: Response): Promise<void | Resp
 
     // Fetch supplier profile details from the database
     const customer = await EcCustomers.findByPk(userId, {
-      attributes: ['full_name', 'e_mail', 'registration_id', 'registration_time_stamp'],
+      attributes: ['full_name', 'e_mail', 'registration_id', 'registration_time_stamp', 'profile_pic'],
     });
 
     if (!customer) {

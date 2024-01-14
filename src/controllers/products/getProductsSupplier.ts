@@ -18,7 +18,6 @@ const getProductsSupplier = async (req: Request, res: Response) => {
             // If supplier_name is not provided in the request body, return an error
             return res.status(422).json({ error: 'Supplier Registration ID required in the request' });
         }
-
        
         let searchQuery: searchQueryType = { supplier_reg_id: supplierRegId }
         if (search) {
@@ -40,7 +39,7 @@ if(offset){
 
 
 if(sortBy &&sortOrder){
-    sorting={[sortBy as string]:parseInt(sortOrder as string)}
+    sorting={[sortBy  as string]:parseInt(sortOrder  as string)}
     }
         let products = await db.collection('products').find(searchQuery,{
           projection: {

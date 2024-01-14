@@ -6,7 +6,10 @@ import { Server } from 'socket.io';
 const db: Db = client.db("e-commerce");
 
 // Define the route to edit product stock
-const editProducts = async (req: Request, res: Response, io:Server) => {
+const editProducts = async (req: Request, res: Response
+  // , io:Server
+
+  ) => {
   try {
     const { _id, updatedStock }: { _id: string, updatedStock: number } = req.body;
 
@@ -24,15 +27,13 @@ const editProducts = async (req: Request, res: Response, io:Server) => {
       { $set: { product_stock: updatedStock } }
     );
 
-    if (result.modifiedCount >= 0) {
+    // if(result.modifiedCount===1 && updatedStock===0)
+    // io.emit('productOutOfStock', { productId: _id });
+   
       if (result.modifiedCount === 0) {
-        // Emit socket event to notify customers that the product is out of stock
-        io.emit('productOutOfStock', { productId: _id });
+        res.status(404).json({ error: 'Product not found' });        
       }
-      res.status(200).json({ success: 'Product stock updated successfully' });
-    } else {
-      res.status(404).json({ error: 'Product not found' });
-    }
+      else res.status(200).json({ success: 'Product stock updated successfully' }); 
   } catch (error) {
     console.error('Error updating product stock:', error);
     res.status(500).json({ error: 'Internal Server Error' });

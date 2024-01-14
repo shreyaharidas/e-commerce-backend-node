@@ -27,7 +27,7 @@ EcCustomers.init(
       allowNull: false,
     },
     profile_pic: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       allowNull: true,
     },
     registration_id: {

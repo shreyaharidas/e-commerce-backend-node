@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from 'express';
+import multer from 'multer';
 import { supplierRegistration } from '../controllers/supplierControllers/supplierRegistration.ts';
 import verifyToken from '../middleware/verifyjwt.ts';
 import resetPassword from '../controllers/commonFunctionalities/resetPassword.ts';
@@ -6,18 +7,18 @@ import { supplierProfile } from '../controllers/supplierControllers/supplierProf
 import { getProductsSupplier } from '../controllers/products/getProductsSupplier.ts';
 import { addProducts } from '../controllers/products/addProducts.ts';
 import { editProducts } from '../controllers/products/editProducts.ts';
-import { Server } from 'socket.io';
-import { initializeIO } from '../services/io.ts';
-import { getIO } from '../services/io.ts';
 import { getUniqueProduct } from '../controllers/products/getUniqueProduct.ts';
+// import { io } from '../server.ts';
+
 
 // Create a router instance
 const router: Router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Initialize the io instance using the getIO function
-const io = getIO();
 
-router.post('/supplierRegistration', (req: Request, res: Response) => {
+router.post('/supplierRegistration', upload.single("profile_pic"), (req: Request, res: Response) => {
   supplierRegistration(req, res); 
 });
 
@@ -37,16 +38,17 @@ router.get('/getUniqueProduct/:_id', verifyToken, (req: Request, res: Response) 
   getUniqueProduct(req,res);
 });
 
-router.post('/addProducts', verifyToken,(req: Request, res: Response) => {
+router.post('/addProducts',upload.single("product_photo"), verifyToken ,(req: Request, res: Response) => {
   addProducts(req,res);
 });
 
 router.patch('/editProducts', verifyToken, (req: Request, res: Response) => {
-  if (io) {
-    editProducts(req, res, io);
-  } else {
-    res.status(500).json({ error: 'Socket.IO not initialized' });
-  }
+  // try {
+  //   if(io)
+    editProducts(req, res);
+  // } catch(err:unknown) {
+  //   res.status(500).json({ error: err?.toString() });
+  // }
 });
 // Export the router
 
