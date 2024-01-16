@@ -9,6 +9,7 @@ import addToCart from '../controllers/customers/cart/addToCart';
 import updateCart from '../controllers/customers/cart/updateCart';
 import getCart from '../controllers/customers/cart/getCart';
 import { getUniqueProduct } from '../controllers/products/getUniqueProduct';
+import { cartCheckout } from '../controllers/customers/cart/cartCheckout';
 
 // Create a router instance
 const router: Router = express.Router();
@@ -47,6 +48,10 @@ router.get('/getCart',verifyToken,(req:Request, res:Response)=>{
 router.get('/getUniqueProduct/:_id', verifyToken, (req: Request, res: Response) => {
   getUniqueProduct(req,res);
 });
+
+router.post('/cartCheckout',  (req: Request, res: Response) => {
+  cartCheckout(req,res);
+})
 
 
 // Export the router

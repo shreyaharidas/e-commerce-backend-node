@@ -4,7 +4,7 @@ import EcBills from '../../../models/ec_bills';
 
 const cartCheckout=async(req: Request, res: Response) :Promise<Response<any, Record<string, any>>|undefined>=>{
 
-    const stripe = new Stripe('your-stripe-secret-key', {
+    const stripe = new Stripe('sk_test_51ORUlBSHq5EqE6NlIIjtrUNg8XYq8VrbZuIYgHEInSPs2qbOiZv1fhWLbLiUX6ykWfuY2Y3KWlVbhtUACEYRk3oO003KVzBoKC', {
         apiVersion: '2023-10-16',
       });
 
@@ -12,29 +12,32 @@ const cartCheckout=async(req: Request, res: Response) :Promise<Response<any, Rec
         const { products, token } = req.body;
     
         // Validate required fields
-        if (!products || !Array.isArray(products) || products.length === 0 || !token) {
-          return res.status(422).json({ error: 'Invalid request payload' });
-        }
+        // if (!products || !Array.isArray(products) || products.length === 0 || !token) {
+        //   return res.status(422).json({ error: 'Invalid request payload' });
+        // }
     
-        // Calculate total amount from products (you should adjust this based on your product data)
-        const totalAmount = products.reduce((total, product) => total + product.product_price * product.quantity, 0);
+        // // Calculate total amount from products (you should adjust this based on your product data)
+        // const totalAmount = products.reduce((total, product) => total + product.product_price * product.quantity, 0);
     
         // Create a payment intent with Stripe
         const paymentIntent = await stripe.paymentIntents.create({
-          amount: totalAmount,
+          amount: 1000,
           currency: 'inr',
-          payment_method: token.id ||"tok_in",
+          payment_method: 'pm_card_visa',
           confirm: true,
+          return_url: 'https://yourwebsite.com/success',
         });
+
+    
     
 // Store checkout details in the MySQL database
 const checkoutDetails = {
     invoice_number: paymentIntent.id,
-    total_amount: totalAmount.toString(),
-    products: JSON.stringify(products),
+    // total_amount: totalAmount.toString(),
+    // products: JSON.stringify(products),
   };
 
-  const ecBillEntry = await EcBills.create(checkoutDetails);
+  // const ecBillEntry = await EcBills.create(checkoutDetails);
 
         // Handle successful payment
         return res.status(200).json({ success: true, paymentIntent });
