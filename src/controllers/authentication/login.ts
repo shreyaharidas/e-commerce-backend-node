@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import EcSuppliers from "../../models/ec_suppliers";
 import EcCustomers from "../../models/ec_customers";
+import envConfig from "../../config/envConfig";
 
 const login = async (req: Request, res: Response): Promise<void> => {
   const { e_mail, password, client_type } = req.body;
@@ -26,7 +27,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
       // Generate JWT token
       const token = jwt.sign(
         { userId: user.id, client_type },
-        "your-secret-key", // Replace with your secret key
+        `${envConfig.jwt_secret_key}`, // Replace with your secret key
         { expiresIn: "24h" } // Token expiration time
       );
 

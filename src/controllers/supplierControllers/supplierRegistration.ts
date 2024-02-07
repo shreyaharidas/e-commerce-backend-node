@@ -4,6 +4,7 @@ import { base64ToBlob } from '../../utils/base64ToBlob';
 import AWS from 'aws-sdk';
 import { Readable } from 'stream';
 import { ManagedUpload } from 'aws-sdk/lib/s3/managed_upload';
+import { s3UploadAsync } from '../../utils/s3uploadAsync';
 
 const s3 = new AWS.S3({
   accessKeyId: 'AKIAW3MEC2CXQZDAUQVW',
@@ -36,17 +37,6 @@ const supplierRegistration = async(req: Request, res: Response) :Promise<void> =
       //   }
       // });
 
-      const s3UploadAsync = (params: AWS.S3.PutObjectRequest): Promise<ManagedUpload.SendData> => {
-        return new Promise((resolve, reject) => {
-          s3.upload(params, (err: Error, data: ManagedUpload.SendData) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve(data);
-            }
-          });
-        });
-      };
 
       try {
         const profile_pic_url = await s3UploadAsync(params);

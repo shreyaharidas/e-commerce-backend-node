@@ -61,9 +61,10 @@ const limitStage={$limit:10};
 pipeline.push(limitStage);
 
       const products = await db.collection('products').aggregate(pipeline).toArray();
+      const productCount= (await db.collection('products').find({}).toArray()).length
       
 
-    res.status(200).json({products});
+    res.status(200).json({count:productCount,products});
   } catch (error) {
     console.error('Error fetching products:', error);
     res.status(500).json({ error: 'Internal Server Error' });

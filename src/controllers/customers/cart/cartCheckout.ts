@@ -1,10 +1,11 @@
 import { Stripe } from 'stripe';
 import { Request, Response } from 'express';
 import EcBills from '../../../models/ec_bills';
+import envConfig from '../../../config/envConfig';
 
 const cartCheckout=async(req: Request, res: Response) :Promise<Response<any, Record<string, any>>|undefined>=>{
 
-    const stripe = new Stripe('sk_test_51ORUlBSHq5EqE6NlIIjtrUNg8XYq8VrbZuIYgHEInSPs2qbOiZv1fhWLbLiUX6ykWfuY2Y3KWlVbhtUACEYRk3oO003KVzBoKC', {
+    const stripe = new Stripe(`${envConfig.stripe_secret_key}`, {
         apiVersion: '2023-10-16',
       });
 

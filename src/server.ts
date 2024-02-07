@@ -14,6 +14,7 @@ import { Server, Socket } from 'socket.io';
 import supplierRoutes from './routes/supplierRoutes.ts';
 import customerRoutes from './routes/customerRoutes.ts';
 import indexRoutes from './routes/index.ts';
+import envConfig from './config/envConfig.ts';
 
 dotenv.config();
 
@@ -34,7 +35,7 @@ io.on('connection', (socket: Socket) => {
 });
 
 const corsOptions = {
-  origin: 'http://localhost:8080',
+  origin: `${envConfig.cors_origin}`,
 };
 
 sequelizeSync();
