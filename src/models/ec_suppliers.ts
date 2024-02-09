@@ -62,8 +62,9 @@ EcSuppliers.init(
         // Hash the password using bcrypt before creating the record
         const hashedPassword = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
         user.password = hashedPassword;
-      },
+      }
     },
+    
   }
 );
 

@@ -6,7 +6,15 @@ import EcSuppliers from "../../models/ec_suppliers";
 import EcCustomers from "../../models/ec_customers";
 import envConfig from "../../config/envConfig";
 
-const login = async (req: Request, res: Response): Promise<void> => {
+const login = async (
+  req: Request,
+  res: Response
+): Promise<
+  Response<
+    any,
+    Record<"message" | "token" | "client_type" | "registration_id", string>
+  >
+> => {
   const { e_mail, password, client_type } = req.body;
 
   try {
@@ -22,6 +30,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
         where: { e_mail },
         raw: true,
       });
+
     // Check if the user exists and the password is correct
     if (user && bcrypt.compareSync(password, user.password)) {
       // Generate JWT token
@@ -31,13 +40,17 @@ const login = async (req: Request, res: Response): Promise<void> => {
         { expiresIn: "24h" } // Token expiration time
       );
 
-      res.json({ token, registration_id: user.registration_id, client_type, });
+      return res.json({
+        token,
+        registration_id: user.registration_id,
+        client_type,
+      });
     } else {
-      res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
