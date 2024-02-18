@@ -30,7 +30,7 @@ router.patch('/resetPassword',verifyToken,(req:Request, res:Response)=>{
   resetPassword(req,res);
 })
 
-router.get('/getProductsSupplier', verifyToken, (req: Request, res: Response) => {
+router.get('/getProductsSupplier',(req: Request, res: Response) => {
   getProductsSupplier(req,res);
 });
 

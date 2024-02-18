@@ -34,9 +34,13 @@ io.on('connection', (socket: Socket) => {
   });
 });
 
-const corsOptions = {
-  origin: `${envConfig.cors_origin}`,
+const corsOptions:cors.CorsOptions = {
+  // origin: `${envConfig.cors_origin}`,
+ origin:"http://localhost:8080",
+ methods:"GET"
+
 };
+
 
 sequelizeSync();
 connectToMongoDb();

@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     "target": "es2016",
-    "module": "commonjs",  // Change to "commonjs" instead of "NodeNext"
+    "module": "commonjs",  
     "outDir": "./dist",
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "noEmit": true,
+    // "types": ["sinon","mocha"]
   },
-  "include": ["src/**/*.ts","types/**/*.ts"],
+  "include": ["src/**/*.ts","types/**/*.ts","test/**/*.test.ts"],
   "exclude": ["node_modules", "dist"]
 }
