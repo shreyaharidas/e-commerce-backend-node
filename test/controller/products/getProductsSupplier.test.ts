@@ -106,7 +106,6 @@ let req: Partial<Request> = {
 
 describe('getProductsSupplier', function () {
     let getProductsSpy: sinon.SinonSpy;
-    let getProductsStub:sinon.SinonStub= sinon.stub().resolves(mockProducts.products);
     let jsonSpy: sinon.SinonSpy;
     let res: Partial<Response>;
 
@@ -131,7 +130,7 @@ describe('getProductsSupplier', function () {
     });
 
     it('should return products when supplier registration ID is provided', async function () {
-     
+        let getProductsStub:sinon.SinonStub= sinon.stub().resolves(mockProducts.products);  
         sinon.replace(serviceGetData,'getData',getProductsStub)
         await getProductsSpy(req as Request, res as Response);
         sinon.assert.called(getProductsSpy);

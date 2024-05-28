@@ -4,10 +4,10 @@ import envConfig from "./envConfig";
 
 const sequelize = new Sequelize({
   database: 'e_commerce',
-  username: envConfig.mysql_username,
-  password:envConfig.mysql_password,
-  host:envConfig.mysql_host,
-  port:envConfig.mysql_port,
+  username: "root",
+  password:"Shreya#1994",
+  host:"ec2-13-200-244-243.ap-south-1.compute.amazonaws.com",
+  port:3306,
   dialect: 'mysql',
 });
 
